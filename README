@@ -1,0 +1,21 @@
+# AI Chat App (Ollama + Python)
+
+This is a simple desktop AI chat application built with Python and PySide6.  
+It connects to a local Ollama server to generate AI responses.
+
+---
+
+## Requirements
+
+### 1. Create virtual environment (only first time)
+python -m venv env
+
+### 2. Activate the environment (Linux and macOS):
+source env/bin/activate
+
+### 2. Activate the environment (Windows):
+env\Scripts\activate.bat
+
+### 3. Install dependencies using:
+pip install -r requirements.txt
+
