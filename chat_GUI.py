@@ -7,7 +7,7 @@ from PySide6.QtCore import QThread, Signal
 from chat import chat_service
 
 
-class Tasker(QThread):
+class TaskThread(QThread):
     finished = Signal(str)
 
     def __init__(self, question):
@@ -55,7 +55,7 @@ class Form(QDialog):
         self.text.append(f"You: {question}")
         self.text.append("AI: Thinking...\n")
 
-        self.task = Tasker(question)
+        self.task = TaskThread(question)
 
         self.task.finished.connect(self.show_response)
         self.task.start()
