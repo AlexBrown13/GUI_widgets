@@ -1,5 +1,6 @@
 import sys
 import requests 
+from logger import logger
 
 # Ollama local server
 OLLAMA_URL  = "http://localhost:11434"        
@@ -13,15 +14,15 @@ def check_ollama():
         res = requests.get(f"{OLLAMA_URL}/api/tags", timeout=5)
         if res.status_code == 200:
             models = [m['name'] for m in res.json().get("models", [])]
-            #logger.info(f"Ollama is runing. Available models {models}")
+            logger.info(f"Ollama is running. Available models {models}")
             if not any(MODEL in m for m in models):
-                #logger.warning(f"Model not found")
+                logger.warning(f"Model not found")
                 sys.exit(2) 
         else:
-            #logger.error("Connection to Ollama failed")
+            logger.error("Connection to Ollama failed")
             raise ConnectionError()
     except Exception:
-        #logger.error(f"Ollma is not running or not reachable at {OLLAMA_URL}")
+        logger.error(f"Ollma is not running or not reachable at {OLLAMA_URL}")
         sys.exit(2)
 
 
@@ -51,7 +52,7 @@ def ask_ollama(question, history=None):
 
     except Exception as e:
         print(f"Error {e}")
-        #logger.error(f"Error communication with Ollama {e}")
+        logger.error(f"Error communication with Ollama {e}")
 
 
 def chat_service(question=None):

@@ -3,7 +3,20 @@ from PySide6.QtWidgets import (QApplication, QDialog,
         QLineEdit, QPushButton, QVBoxLayout, QTextEdit,
         QLabel
     )
+from PySide6.QtCore import QThread, Signal
 from chat import chat_service
+
+
+class Tasker(QThread):
+    finished = Signal(str)
+
+    def __init__(self, question):
+        super().__init__()
+        self.question = question
+
+    def run(self):
+        response = chat_service(self.question)
+        self.finished.emit(response)
 
 
 class Form(QDialog):
@@ -16,6 +29,7 @@ class Form(QDialog):
         self.edit = QLineEdit("")
         self.button = QPushButton("Ask")
         self.text = QTextEdit("")
+        self.text.setReadOnly(True)
 
         # Create layout and add widget
         layout = QVBoxLayout()
@@ -30,17 +44,26 @@ class Form(QDialog):
 
 
     def ask_ai(self):
-        question = self.edit.text()
+        question = self.edit.text().strip()
 
         if not question:
-            self.text.setText("Please enter a question")
+            self.text.append("Please enter a question\n")
             return None
         
-        #TODO add processEvents
-        # self.text.setText("Thinking...")
+        self.edit.clear()
 
-        response = chat_service(question)
-        self.text.setText(response)
+        self.text.append(f"You: {question}")
+        self.text.append("AI: Thinking...\n")
+
+        self.worker = Tasker(question)
+
+        self.worker.finished.connect(self.show_response)
+        self.worker.start()
+
+
+    def show_response(self, response):
+        self.text.append(f"AI: {response}")
+        self.text.append("-" * 40)
 
 
 if __name__ == '__main__':
