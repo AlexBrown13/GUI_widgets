@@ -55,10 +55,10 @@ class Form(QDialog):
         self.text.append(f"You: {question}")
         self.text.append("AI: Thinking...\n")
 
-        self.worker = Tasker(question)
+        self.task = Tasker(question)
 
-        self.worker.finished.connect(self.show_response)
-        self.worker.start()
+        self.task.finished.connect(self.show_response)
+        self.task.start()
 
 
     def show_response(self, response):
