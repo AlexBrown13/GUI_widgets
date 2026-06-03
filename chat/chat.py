@@ -1,6 +1,6 @@
 import sys
 import requests 
-from logger import logger
+from chat.logger import logger
 
 # Ollama local server
 OLLAMA_URL  = "http://localhost:11434"        

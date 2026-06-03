@@ -4,7 +4,7 @@ from PySide6.QtWidgets import (QApplication, QDialog,
         QLabel
     )
 from PySide6.QtCore import QThread, Signal
-from chat import chat_service
+from chat.chat import chat_service
 
 
 class TaskThread(QThread):
